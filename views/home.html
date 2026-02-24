@@ -24,7 +24,7 @@
         {{ range .posts }}
         <article>
             <h3><a href="/posts/{{ .ID }}">{{ .Title }}</a></h3>
-            <p>By {{ .Author.Username }} | {{ .CreatedAt.Format "2006-01-02" }}</p>
+            <p>By {{ .Author.Username }} | {{ .CreatedAt.Format "2006-01-02 15:04:05" }}</p>
             <p>{{ .Excerpt }}</p>
         </article>
         {{ else }}

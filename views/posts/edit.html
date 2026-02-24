@@ -21,7 +21,7 @@
     <main>
         <h1>Edit Post</h1>
         {{ if .error }}<p style="color:red">{{ .error }}</p>{{ end }}
-        <form method="POST" action="/posts/{{ .post.ID }}?_method=PUT">
+        <form method="POST" action="/posts/{{ .post.ID }}/update">
             <div>
                 <label>Title</label>
                 <input type="text" name="title" value="{{ .post.Title }}" required>

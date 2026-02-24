@@ -30,8 +30,8 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB, cfg *config.Config) {
 		auth.GET("/posts/new", postHandler.ShowCreateForm)
 		auth.POST("/posts", postHandler.Create)
 		auth.GET("/posts/:id/edit", postHandler.ShowEditForm)
-		auth.PUT("/posts/:id", postHandler.Update)
-		auth.DELETE("/posts/:id", postHandler.Delete)
+		auth.POST("/posts/:id/update", postHandler.Update)
+		auth.POST("/posts/:id/delete", postHandler.Delete)
 		auth.POST("/posts/:id/comments", commentHandler.Create)
 		auth.GET("/profile", userHandler.ShowProfile)
 	}

@@ -24,15 +24,20 @@
         {{ else }}
         <article>
             <h1>{{ .post.Title }}</h1>
-            <p>By {{ .post.Author.Username }} | {{ .post.CreatedAt.Format "2006-01-02" }} | {{ .post.Category }}</p>
+            <p>By {{ .post.Author.Username }} | {{ .post.CreatedAt.Format "2006-01-02 15:04:05" }} | {{ .post.Category }}</p>
             <div>{{ .post.Content }}</div>
-            <p><a href="/posts/{{ .post.ID }}/edit">Edit</a></p>
+            <p>
+                <a href="/posts/{{ .post.ID }}/edit">Edit</a>
+                <form method="POST" action="/posts/{{ .post.ID }}/delete" style="display:inline">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
         </article>
         <section>
             <h2>Comments</h2>
             {{ range .comments }}
             <div>
-                <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02" }}
+                <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02 15:04:05" }}
                 <p>{{ .Content }}</p>
             </div>
             {{ else }}

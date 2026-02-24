@@ -29,7 +29,7 @@
         {{ range .posts }}
         <article>
             <h3><a href="/posts/{{ .ID }}">{{ .Title }}</a></h3>
-            <p>{{ .CreatedAt.Format "2006-01-02" }}</p>
+            <p>{{ .CreatedAt.Format "2006-01-02 15:04:05" }}</p>
         </article>
         {{ else }}
         <p>No posts yet.</p>

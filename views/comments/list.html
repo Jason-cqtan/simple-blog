@@ -20,7 +20,7 @@
         <h1>Comments</h1>
         {{ range .comments }}
         <div>
-            <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02" }}
+            <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02 15:04:05" }}
             <p>{{ .Content }}</p>
         </div>
         {{ else }}

@@ -87,7 +87,7 @@ func (h *PostHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.db.Create(&post).Error; err != nil {
-		c.HTML(http.StatusInternalServerError, "posts/create.html", gin.H{"error": "Failed to create post"})
+		c.HTML(http.StatusInternalServerError, "posts/create.html", gin.H{"error": "Failed to create post: " + err.Error()})
 		return
 	}
 
@@ -145,7 +145,7 @@ func (h *PostHandler) Update(c *gin.Context) {
 	post.Tags = c.PostForm("tags")
 
 	if err := h.db.Save(&post).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update post"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update post: " + err.Error()})
 		return
 	}
 
@@ -171,6 +171,9 @@ func (h *PostHandler) Delete(c *gin.Context) {
 		return
 	}
 
-	h.db.Delete(&post)
+	if err := h.db.Delete(&models.Post{}, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete post: " + err.Error()})
+		return
+	}
 	c.Redirect(http.StatusFound, "/posts")
 }
