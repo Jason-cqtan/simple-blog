@@ -1,0 +1,53 @@
+{{ define "posts/detail.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/posts/new">New Post</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+        </nav>
+    </header>
+    <main>
+        {{ if .error }}
+        <p>Error: {{ .error }}</p>
+        {{ else }}
+        <article>
+            <h1>{{ .post.Title }}</h1>
+            <p>By {{ .post.Author.Username }} | {{ .post.CreatedAt.Format "2006-01-02" }} | {{ .post.Category }}</p>
+            <div>{{ .post.Content }}</div>
+            <p><a href="/posts/{{ .post.ID }}/edit">Edit</a></p>
+        </article>
+        <section>
+            <h2>Comments</h2>
+            {{ range .comments }}
+            <div>
+                <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02" }}
+                <p>{{ .Content }}</p>
+            </div>
+            {{ else }}
+            <p>No comments yet.</p>
+            {{ end }}
+            <form method="POST" action="/posts/{{ .post.ID }}/comments">
+                <textarea name="content" placeholder="Add a comment..." required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+        </section>
+        {{ end }}
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}

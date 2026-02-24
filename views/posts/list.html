@@ -1,0 +1,39 @@
+{{ define "posts/list.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/posts/new">New Post</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+        </nav>
+    </header>
+    <main>
+        <h1>All Posts</h1>
+        <a href="/posts/new">Create New Post</a>
+        {{ range .posts }}
+        <article>
+            <h2><a href="/posts/{{ .ID }}">{{ .Title }}</a></h2>
+            <p>By {{ .Author.Username }} | {{ .CreatedAt.Format "2006-01-02" }} | {{ .Category }}</p>
+            <p>{{ .Excerpt }}</p>
+        </article>
+        {{ else }}
+        <p>No posts found.</p>
+        {{ end }}
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}
