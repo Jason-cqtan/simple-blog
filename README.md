@@ -23,7 +23,8 @@ A simple blog system built with Go, Gin framework, GORM, and JWT authentication.
 
 ```
 simple-blog/
-├── main.go                 # Single entry point
+├── main.go                 # Entry point (supports --seed flag)
+├── .env.example            # Environment variable template
 ├── config/
 │   └── config.go           # Environment-driven configuration
 ├── models/
@@ -46,7 +47,12 @@ simple-blog/
 │   └── comments/
 ├── static/                 # CSS, JS, images
 ├── database/
-│   └── connection.go       # DB init + AutoMigrate
+│   ├── connection.go       # DB init + AutoMigrate
+│   ├── seeder.go           # Seed data (admin user, sample posts/comments)
+│   └── migrations/
+│       └── 001_initial_schema.sql  # Reference schema (PostgreSQL)
+├── scripts/
+│   └── init-db.sql         # PostgreSQL database/user bootstrap script
 └── utils/
     ├── jwt.go              # JWT helpers
     └── validators.go       # Validation helpers
@@ -61,19 +67,40 @@ simple-blog/
 
 ### Configuration
 
-Copy the example environment variables and adjust as needed:
+Copy the example environment file and adjust values:
 
 ```bash
-export DB_DRIVER=mysql          # mysql or postgres
+cp .env.example .env
+# Edit .env with your database credentials and secret key
+set -a; source .env; set +a
+```
+
+Or export the variables manually:
+
+```bash
+export DB_DRIVER=postgres       # postgres or mysql
 export DB_HOST=localhost
-export DB_PORT=3306
-export DB_USER=root
-export DB_PASSWORD=yourpassword
+export DB_PORT=5432
+export DB_USER=blog_user
+export DB_PASSWORD=your_db_password
 export DB_NAME=simple_blog
 export JWT_SECRET=your-secret-key
 export SERVER_PORT=8080
 export SECURE_COOKIE=false      # set true in production (HTTPS)
 ```
+
+### PostgreSQL Setup
+
+1. Run the bootstrap script as a PostgreSQL superuser to create the database and
+   application user:
+
+   ```bash
+   psql -U postgres -f scripts/init-db.sql
+   ```
+
+2. The application will create all tables automatically via GORM AutoMigrate on
+   first startup. The reference schema is documented in
+   `database/migrations/001_initial_schema.sql`.
 
 ### Run
 
@@ -81,9 +108,22 @@ export SECURE_COOKIE=false      # set true in production (HTTPS)
 # Install dependencies
 go mod tidy
 
-# Run the server
+# Start the server (tables are created automatically on first run)
 go run main.go
+
+# Seed the database with an admin user and sample content, then exit
+go run main.go --seed
 ```
+
+After seeding, you can log in with:
+
+| Field    | Value              |
+|----------|--------------------|
+| Username | `admin`            |
+| Password | `Admin@123456`     |
+
+> **Security notice:** Change the default admin password immediately after your first login,
+> especially before any non-local or production deployment.
 
 The server starts on `http://localhost:8080` by default.
 
