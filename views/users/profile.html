@@ -1,0 +1,44 @@
+{{ define "users/profile.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/posts/new">New Post</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+        </nav>
+    </header>
+    <main>
+        {{ if .error }}
+        <p>Error: {{ .error }}</p>
+        {{ else }}
+        <h1>{{ .user.Username }}'s Profile</h1>
+        <p>Email: {{ .user.Email }}</p>
+        <p>{{ .user.Bio }}</p>
+        <h2>Posts</h2>
+        {{ range .posts }}
+        <article>
+            <h3><a href="/posts/{{ .ID }}">{{ .Title }}</a></h3>
+            <p>{{ .CreatedAt.Format "2006-01-02" }}</p>
+        </article>
+        {{ else }}
+        <p>No posts yet.</p>
+        {{ end }}
+        {{ end }}
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}

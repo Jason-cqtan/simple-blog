@@ -1,0 +1,40 @@
+{{ define "users/login.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Login</h1>
+        {{ if .error }}<p style="color:red">{{ .error }}</p>{{ end }}
+        <form method="POST" action="/login">
+            <div>
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="/register">Don't have an account? Register</a></p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}

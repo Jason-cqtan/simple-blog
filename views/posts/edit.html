@@ -1,0 +1,53 @@
+{{ define "posts/edit.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/posts/new">New Post</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/profile">Profile</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Edit Post</h1>
+        {{ if .error }}<p style="color:red">{{ .error }}</p>{{ end }}
+        <form method="POST" action="/posts/{{ .post.ID }}?_method=PUT">
+            <div>
+                <label>Title</label>
+                <input type="text" name="title" value="{{ .post.Title }}" required>
+            </div>
+            <div>
+                <label>Excerpt</label>
+                <input type="text" name="excerpt" value="{{ .post.Excerpt }}">
+            </div>
+            <div>
+                <label>Content</label>
+                <textarea name="content" rows="10">{{ .post.Content }}</textarea>
+            </div>
+            <div>
+                <label>Category</label>
+                <input type="text" name="category" value="{{ .post.Category }}">
+            </div>
+            <div>
+                <label>Tags</label>
+                <input type="text" name="tags" value="{{ .post.Tags }}">
+            </div>
+            <button type="submit">Update Post</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}

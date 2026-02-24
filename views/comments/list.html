@@ -1,0 +1,35 @@
+{{ define "comments/list.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments - Simple Blog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Simple Blog</a>
+            <a href="/posts">Posts</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Comments</h1>
+        {{ range .comments }}
+        <div>
+            <strong>{{ .Author.Username }}</strong> - {{ .CreatedAt.Format "2006-01-02" }}
+            <p>{{ .Content }}</p>
+        </div>
+        {{ else }}
+        <p>No comments.</p>
+        {{ end }}
+    </main>
+    <footer>
+        <p>&copy; 2024 Simple Blog</p>
+    </footer>
+</body>
+</html>
+{{ end }}
