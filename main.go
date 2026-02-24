@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -11,11 +12,21 @@ import (
 )
 
 func main() {
+	seed := flag.Bool("seed", false, "initialize the database and load seed data, then exit")
+	flag.Parse()
+
 	cfg := config.LoadConfig()
 
 	db, err := database.InitDB(cfg)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	if *seed {
+		if err := database.Seed(db); err != nil {
+			log.Fatalf("Failed to seed database: %v", err)
+		}
+		return
 	}
 
 	router := gin.Default()
