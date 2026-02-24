@@ -2,15 +2,18 @@ package utils
 
 import (
 	"errors"
+	"regexp"
 	"strings"
 )
+
+// emailRegex is a simplified RFC 5322-compatible pattern for common email addresses.
+var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
 
 func ValidateEmail(email string) error {
 	if email == "" {
 		return errors.New("email is required")
 	}
-	parts := strings.Split(email, "@")
-	if len(parts) != 2 || parts[0] == "" || parts[1] == "" || !strings.Contains(parts[1], ".") {
+	if !emailRegex.MatchString(email) {
 		return errors.New("invalid email format")
 	}
 	return nil

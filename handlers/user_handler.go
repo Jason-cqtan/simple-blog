@@ -89,7 +89,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 }
 
 func (h *UserHandler) Logout(c *gin.Context) {
-	c.SetCookie("token", "", -1, "/", "", false, true)
+	c.SetCookie("token", "", -1, "/", "", h.cfg.SecureCookie, true)
 	c.Redirect(http.StatusFound, "/")
 }
 
