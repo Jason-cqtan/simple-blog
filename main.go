@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/Jason-cqtan/simple-blog/config"
 	"github.com/Jason-cqtan/simple-blog/database"
@@ -30,7 +32,22 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.LoadHTMLGlob("views/**/*")
+
+	// Collect all .html files under views/ (including root-level files like views/home.html)
+	var htmlFiles []string
+	if err := filepath.WalkDir("views", func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !d.IsDir() && filepath.Ext(path) == ".html" {
+			htmlFiles = append(htmlFiles, path)
+		}
+		return nil
+	}); err != nil {
+		log.Fatalf("Failed to walk views directory: %v", err)
+	}
+	router.LoadHTMLFiles(htmlFiles...)
+
 	router.Static("/static", "./static")
 
 	routes.SetupRoutes(router, db, cfg)
