@@ -3,7 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"log"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/Jason-cqtan/simple-blog/config"
 	"github.com/Jason-cqtan/simple-blog/database"
@@ -30,7 +34,23 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.LoadHTMLGlob("views/**/*")
+
+	tmpl := template.New("")
+	walkErr := filepath.Walk("views", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(path, ".html") {
+			if _, err = tmpl.ParseFiles(path); err != nil {
+				return fmt.Errorf("failed to parse template %s: %w", path, err)
+			}
+		}
+		return nil
+	})
+	if walkErr != nil {
+		log.Fatalf("Failed to load templates: %v", walkErr)
+	}
+	router.SetHTMLTemplate(tmpl)
 	router.Static("/static", "./static")
 
 	routes.SetupRoutes(router, db, cfg)
