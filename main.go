@@ -8,6 +8,7 @@ import (
 	"github.com/Jason-cqtan/simple-blog/config"
 	"github.com/Jason-cqtan/simple-blog/database"
 	"github.com/Jason-cqtan/simple-blog/routes"
+	"github.com/Jason-cqtan/simple-blog/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,12 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.LoadHTMLGlob("views/**/*")
+
+	tmpl, err := utils.LoadTemplates("./views")
+	if err != nil {
+		log.Fatalf("Failed to load templates: %v", err)
+	}
+	router.SetHTMLTemplate(tmpl)
 	router.Static("/static", "./static")
 
 	routes.SetupRoutes(router, db, cfg)
