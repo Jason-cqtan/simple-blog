@@ -34,7 +34,7 @@ func LoadConfig() *Config {
 		DBName:       getEnv("DB_NAME", "simple_blog"),
 		JWTSecret:    jwtSecret,
 		ServerPort:   getEnv("SERVER_PORT", "8080"),
-		SecureCookie: getEnv("SECURE_COOKIE", "false") == "true",
+		SecureCookie: getEnv("SECURE_COOKIE", "true") != "false",
 	}
 }
 
